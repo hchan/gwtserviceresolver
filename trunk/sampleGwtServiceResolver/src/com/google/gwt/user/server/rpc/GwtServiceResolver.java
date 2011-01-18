@@ -6,14 +6,15 @@ import com.google.gwt.user.client.rpc.SerializationException;
 /**
  * Uses reflection to find a class with .client. to .server. + "Impl"
  * 
- * @author Henry Chan - Feb 2009
+ * @author Henry Chan - Jan 2010
  */
 @SuppressWarnings("serial")
 public class GwtServiceResolver extends RemoteServiceServlet {
 
-	
+
 
 	public String processCall(String payload) throws SerializationException {
+		checkPermutationStrongName();
 		try {
 			RPCRequest rpcRequest = RPC.decodeRequest(payload);
 			onAfterRequestDeserialized(rpcRequest);
@@ -30,7 +31,7 @@ public class GwtServiceResolver extends RemoteServiceServlet {
 				rss.init(this.getServletConfig());
 				rss.perThreadRequest = this.perThreadRequest;
 				rss.perThreadResponse = this.perThreadResponse;
-				
+
 			} catch (Exception e) {
 				log(
 						"GWTDispatcher reflection exception",
